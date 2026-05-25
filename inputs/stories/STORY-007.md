@@ -1,20 +1,21 @@
 # STORY-007: Checkout Form Validation
 
 ## User Story
+
 As a standard user,
 I want to see a clear error message when I submit the checkout form with missing information,
 So that I know exactly what I need to fix before I can proceed.
 
 ## Acceptance Criteria
 
-| ID  | Criterion |
-|-----|-----------|
+| ID  | Criterion                                                                                                                           |
+| --- | ----------------------------------------------------------------------------------------------------------------------------------- |
 | AC1 | Clicking **"Continue"** on `/checkout-step-one.html` with all fields empty displays the error: **"Error: First Name is required"**. |
-| AC2 | Filling in First Name only and clicking **"Continue"** displays the error: **"Error: Last Name is required"**. |
-| AC3 | Filling in First Name and Last Name only and clicking **"Continue"** displays the error: **"Error: Postal Code is required"**. |
-| AC4 | Each error appears as a heading at the top of the form and each field gains a visual error indicator (red border / error icon). |
+| AC2 | Filling in First Name only and clicking **"Continue"** displays the error: **"Error: Last Name is required"**.                      |
+| AC3 | Filling in First Name and Last Name only and clicking **"Continue"** displays the error: **"Error: Postal Code is required"**.      |
+| AC4 | Each error appears as a heading at the top of the form and each field gains a visual error indicator (red border / error icon).     |
 | AC5 | After correcting all required fields and clicking **"Continue"**, the user proceeds to `/checkout-step-two.html` without any error. |
-| AC6 | Clicking **"Cancel"** on the checkout form returns the user to `/cart.html` without submitting the form. |
+| AC6 | Clicking **"Cancel"** on the checkout form returns the user to `/cart.html` without submitting the form.                            |
 
 ## Automation Notes
 

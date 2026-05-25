@@ -1,18 +1,19 @@
 # STORY-008: Logout and Session Security
 
 ## User Story
+
 As a standard user,
 I want to be able to log out of the application and have my session properly terminated,
 So that my account is protected and no other user can access my session.
 
 ## Acceptance Criteria
 
-| ID  | Criterion |
-|-----|-----------|
-| AC1 | Clicking **Logout** in the hamburger menu redirects the user to the login page (`/`). |
+| ID  | Criterion                                                                                                                                                                                                                             |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| AC1 | Clicking **Logout** in the hamburger menu redirects the user to the login page (`/`).                                                                                                                                                 |
 | AC2 | After logout, attempting to directly navigate to a protected URL (e.g. `/inventory.html`) redirects the user to the login page and shows the error: **"Epic sadface: You can only access '/inventory.html' when you are logged in."** |
-| AC3 | After logout, pressing the browser **Back** button does not restore the authenticated session; the user remains on the login page or is redirected back to it. |
-| AC4 | A logged-in user who directly navigates to `/inventory.html` (without logging out) is not redirected — the page loads normally. |
+| AC3 | After logout, pressing the browser **Back** button does not restore the authenticated session; the user remains on the login page or is redirected back to it.                                                                        |
+| AC4 | A logged-in user who directly navigates to `/inventory.html` (without logging out) is not redirected — the page loads normally.                                                                                                       |
 
 ## Automation Notes
 
