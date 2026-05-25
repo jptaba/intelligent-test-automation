@@ -67,6 +67,16 @@ npm test
 | `npm run report`               | Open last HTML report                         |
 | `npm run pw:codegen:saucedemo` | Record new tests via Codegen                  |
 
+## Run One Story In Headed Mode
+
+```bash
+# Run only STORY-002 tests from inventory spec
+npx playwright test tests/inventory/inventory.spec.ts --headed --grep "STORY-002"
+
+# Run the full inventory spec in headed mode
+npm run test:headed -- tests/inventory/inventory.spec.ts
+```
+
 ## Credentials
 
 Copy `.env.example` to `.env` and fill in SauceDemo credentials.  

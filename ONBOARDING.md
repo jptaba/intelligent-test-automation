@@ -199,6 +199,16 @@ test('@smoke standard_user can log in successfully', async ({ page }) => {
 | `npm run test:ui`        | Playwright UI mode — run/filter tests visually |
 | `npm run report`         | Open the last HTML test report                 |
 
+Run a specific story in headed mode:
+
+```bash
+# Run only STORY-002 tests from inventory spec
+npx playwright test tests/inventory/inventory.spec.ts --headed --grep "STORY-002"
+
+# Run the full inventory spec in headed mode
+npm run test:headed -- tests/inventory/inventory.spec.ts
+```
+
 ---
 
 ## 6. Automating from a Jira Story
