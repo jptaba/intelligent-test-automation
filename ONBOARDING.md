@@ -85,7 +85,7 @@ This downloads Chromium, Firefox, and WebKit.
 npm test
 ```
 
-You should see **10 tests passing** across 3 domains: auth, inventory, and cart.
+You should see **13 tests passing** across 3 domains: auth, inventory, and cart.
 
 ---
 

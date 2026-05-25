@@ -26,13 +26,6 @@ test.describe('Inventory', () => {
     expect(await inventory.getCartCount()).toBe('2');
   });
 
-  test('products can be sorted A to Z', async ({ loggedInPage }) => {
-    const inventory = new InventoryPage(loggedInPage);
-    await inventory.sortBy('az');
-    const names = await inventory.getProductNames();
-    expect(names).toEqual([...names].sort());
-  });
-
   test.describe('Sort by Name (STORY-002)', () => {
     test('@smoke default sort is Name (A to Z)', async ({ loggedInPage }) => {
       const inventory = new InventoryPage(loggedInPage);

@@ -14,7 +14,10 @@
     "test:cart": "playwright test tests/cart/",
     "pw:install": "playwright install",
     "pw:codegen:saucedemo": "playwright codegen https://www.saucedemo.com",
-    "report": "playwright show-report"
+    "report": "playwright show-report",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "repository": {
     "type": "git",
@@ -29,10 +32,14 @@
   },
   "homepage": "https://github.com/jptaba/demo-playwright-cli#readme",
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@playwright/cli": "^0.1.13",
     "@playwright/test": "^1.60.0",
     "@types/node": "^25.9.1",
     "dotenv": "^17.4.2",
-    "playwright": "^1.60.0"
+    "eslint": "^10.4.0",
+    "eslint-plugin-playwright": "^2.10.4",
+    "playwright": "^1.60.0",
+    "typescript-eslint": "^8.60.0"
   }
 }
