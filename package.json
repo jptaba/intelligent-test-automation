@@ -7,6 +7,13 @@
     "test": "playwright test",
     "test:ui": "playwright test --ui",
     "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:smoke": "playwright test --grep @smoke",
+    "test:auth": "playwright test tests/auth/",
+    "test:inventory": "playwright test tests/inventory/",
+    "test:cart": "playwright test tests/cart/",
+    "pw:install": "playwright install",
+    "pw:codegen:saucedemo": "playwright codegen https://www.saucedemo.com",
     "report": "playwright show-report"
   },
   "repository": {
@@ -22,7 +29,10 @@
   },
   "homepage": "https://github.com/jptaba/demo-playwright-cli#readme",
   "devDependencies": {
+    "@playwright/cli": "^0.1.13",
     "@playwright/test": "^1.60.0",
-    "@types/node": "^25.9.1"
+    "@types/node": "^25.9.1",
+    "dotenv": "^17.4.2",
+    "playwright": "^1.60.0"
   }
 }
