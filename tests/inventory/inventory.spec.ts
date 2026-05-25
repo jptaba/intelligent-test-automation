@@ -47,7 +47,9 @@ test.describe('Inventory', () => {
       expect(names).toEqual([...names].sort().reverse());
     });
 
-    test('can return to Name (A to Z) after sorting Z to A', async ({ loggedInPage }) => {
+    test('can return to Name (A to Z) after sorting Z to A', async ({
+      loggedInPage,
+    }) => {
       const inventory = new InventoryPage(loggedInPage);
       await inventory.sortBy('za');
       await inventory.sortBy('az');
@@ -55,7 +57,9 @@ test.describe('Inventory', () => {
       expect(names).toEqual([...names].sort());
     });
 
-    test('product count stays at 6 after sorting by name', async ({ loggedInPage }) => {
+    test('product count stays at 6 after sorting by name', async ({
+      loggedInPage,
+    }) => {
       const inventory = new InventoryPage(loggedInPage);
       await inventory.sortBy('za');
       const names = await inventory.getProductNames();
