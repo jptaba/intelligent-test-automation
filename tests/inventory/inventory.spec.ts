@@ -32,4 +32,34 @@ test.describe('Inventory', () => {
     const names = await inventory.getProductNames();
     expect(names).toEqual([...names].sort());
   });
+
+  test.describe('Sort by Name (STORY-002)', () => {
+    test('@smoke default sort is Name (A to Z)', async ({ loggedInPage }) => {
+      const inventory = new InventoryPage(loggedInPage);
+      const names = await inventory.getProductNames();
+      expect(names).toEqual([...names].sort());
+    });
+
+    test('can sort products Name (Z to A)', async ({ loggedInPage }) => {
+      const inventory = new InventoryPage(loggedInPage);
+      await inventory.sortBy('za');
+      const names = await inventory.getProductNames();
+      expect(names).toEqual([...names].sort().reverse());
+    });
+
+    test('can return to Name (A to Z) after sorting Z to A', async ({ loggedInPage }) => {
+      const inventory = new InventoryPage(loggedInPage);
+      await inventory.sortBy('za');
+      await inventory.sortBy('az');
+      const names = await inventory.getProductNames();
+      expect(names).toEqual([...names].sort());
+    });
+
+    test('product count stays at 6 after sorting by name', async ({ loggedInPage }) => {
+      const inventory = new InventoryPage(loggedInPage);
+      await inventory.sortBy('za');
+      const names = await inventory.getProductNames();
+      expect(names).toHaveLength(6);
+    });
+  });
 });
