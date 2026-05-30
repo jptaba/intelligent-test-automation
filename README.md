@@ -65,7 +65,7 @@ Playwright TypeScript end-to-end test framework for [SauceDemo](https://www.sauc
                            │
         ┌──────────────────▼──────────────────┐
         │          Notify (webhook)           │
-        │       Discord / Slack               │
+        │          MS Teams                   │
         └─────────────────────────────────────┘
 ```
 
@@ -293,7 +293,7 @@ Additional analysis scripts available independently of Hermes:
 | `npm run gate`          | Evaluate release-gate thresholds (exit 0=PASS, 1=FAIL) |
 | `npm run flaky`         | Detect tests that flip between pass/fail across runs   |
 | `npm run coverage:gaps` | Report stories not covered by any test                 |
-| `npm run notify`        | Send test result summary to Discord/Slack              |
+| `npm run notify`        | Send test result summary to MS Teams                   |
 | `npm run pipeline`      | Run full pipeline: test → archive → gate → notify      |
 
 ---
