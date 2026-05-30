@@ -39,16 +39,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jptaba/demo-playwright-cli.git"
+    "url": "git+https://github.com/jptaba/intelligent-test-automation.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {
-    "url": "https://github.com/jptaba/demo-playwright-cli/issues"
+    "url": "https://github.com/jptaba/intelligent-test-automation/issues"
   },
-  "homepage": "https://github.com/jptaba/demo-playwright-cli#readme",
+  "homepage": "https://github.com/jptaba/intelligent-test-automation#readme",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@playwright/cli": "^0.1.13",
