@@ -163,15 +163,15 @@ npm test
 
 Copy `.env.example` to `.env`. Variables are grouped by feature:
 
-| Group | Variable | Required for |
-|---|---|---|
-| **SauceDemo** | `BASE_URL`, `STANDARD_USER`, `USER_PASSWORD`, `LOCKED_USER`, `PROBLEM_USER` | Tests |
-| **LLM** | `LLM_API_KEY`, `LLM_MODEL` (default: `gpt-4o`), `LLM_PROVIDER` | Hermes pipeline |
-| **Jira** | `JIRA_BASE_URL`, `JIRA_EMAIL`, `JIRA_API_TOKEN`, `JIRA_PROJECT_KEY` | Story ingestion |
-| **Confluence** | `CONFLUENCE_BASE_URL` | Story enrichment |
-| **Figma** | `FIGMA_API_TOKEN` | UI reference extraction |
-| **Notifications** | `DISCORD_WEBHOOK_URL` or `SLACK_WEBHOOK_URL` | Pipeline alerts |
-| **Hermes** | `HERMES_SCHEDULE` (default: `0 * * * *`), `HERMES_MAX_RETRIES` (default: `3`) | Orchestrator |
+| Group             | Variable                                                                      | Required for            |
+| ----------------- | ----------------------------------------------------------------------------- | ----------------------- |
+| **SauceDemo**     | `BASE_URL`, `STANDARD_USER`, `USER_PASSWORD`, `LOCKED_USER`, `PROBLEM_USER`   | Tests                   |
+| **LLM**           | `LLM_API_KEY`, `LLM_MODEL` (default: `gpt-4o`), `LLM_PROVIDER`                | Hermes pipeline         |
+| **Jira**          | `JIRA_BASE_URL`, `JIRA_EMAIL`, `JIRA_API_TOKEN`, `JIRA_PROJECT_KEY`           | Story ingestion         |
+| **Confluence**    | `CONFLUENCE_BASE_URL`                                                         | Story enrichment        |
+| **Figma**         | `FIGMA_API_TOKEN`                                                             | UI reference extraction |
+| **Notifications** | `MS_TEAMS_WEBHOOK_URL`                                                        | Pipeline alerts         |
+| **Hermes**        | `HERMES_SCHEDULE` (default: `0 * * * *`), `HERMES_MAX_RETRIES` (default: `3`) | Orchestrator            |
 
 **Never commit `.env` to version control.**
 
@@ -179,18 +179,18 @@ Copy `.env.example` to `.env`. Variables are grouped by feature:
 
 ## Running Tests
 
-| Command | Description |
-|---|---|
-| `npm test` | All tests headless |
-| `npm run test:headed` | All tests in a visible browser |
-| `npm run test:debug` | Playwright Inspector (step-through) |
-| `npm run test:ui` | Playwright UI mode (interactive) |
-| `npm run test:smoke` | Critical path `@smoke` tests only |
-| `npm run test:auth` | Auth tests only |
-| `npm run test:inventory` | Inventory tests only |
-| `npm run test:cart` | Cart tests only |
-| `npm run report` | Open last HTML report |
-| `npm run pw:codegen:saucedemo` | Record new tests via Codegen |
+| Command                        | Description                         |
+| ------------------------------ | ----------------------------------- |
+| `npm test`                     | All tests headless                  |
+| `npm run test:headed`          | All tests in a visible browser      |
+| `npm run test:debug`           | Playwright Inspector (step-through) |
+| `npm run test:ui`              | Playwright UI mode (interactive)    |
+| `npm run test:smoke`           | Critical path `@smoke` tests only   |
+| `npm run test:auth`            | Auth tests only                     |
+| `npm run test:inventory`       | Inventory tests only                |
+| `npm run test:cart`            | Cart tests only                     |
+| `npm run report`               | Open last HTML report               |
+| `npm run pw:codegen:saucedemo` | Record new tests via Codegen        |
 
 ```bash
 # Run a single spec headed
@@ -245,15 +245,15 @@ npm run hermes:once -- --skip-automate
 
 Run any single phase standalone:
 
-| Command | Phase | Description |
-|---|---|---|
-| `npm run hermes:ingest` | 1 | Fetch and enrich stories from Jira |
-| `npm run hermes:codebase` | 2 | Scan codebase and update CODEBASE.md |
-| `npm run hermes:generate` | 3 | Generate test case markdown from a story |
-| `npm run hermes:gate` | 4 | Evaluate coverage gate for a story |
-| `npm run hermes:learn` | 5 | Learn from coverage gaps and update prompts |
-| `npm run hermes:automate` | 6 | Generate and run a Playwright spec from TC |
-| `npm run hermes:heal` | 7 | Self-heal broken selectors in a failing spec |
+| Command                   | Phase | Description                                  |
+| ------------------------- | ----- | -------------------------------------------- |
+| `npm run hermes:ingest`   | 1     | Fetch and enrich stories from Jira           |
+| `npm run hermes:codebase` | 2     | Scan codebase and update CODEBASE.md         |
+| `npm run hermes:generate` | 3     | Generate test case markdown from a story     |
+| `npm run hermes:gate`     | 4     | Evaluate coverage gate for a story           |
+| `npm run hermes:learn`    | 5     | Learn from coverage gaps and update prompts  |
+| `npm run hermes:automate` | 6     | Generate and run a Playwright spec from TC   |
+| `npm run hermes:heal`     | 7     | Self-heal broken selectors in a failing spec |
 
 ### Configuration
 
@@ -285,16 +285,16 @@ Prompt templates (customisable) live in `.hermes/prompts/`. The pipeline appends
 
 Additional analysis scripts available independently of Hermes:
 
-| Command | Description |
-|---|---|
-| `npm run check:env` | Validate all required env vars are set |
-| `npm run archive` | Archive latest results to `test-results/history/` |
-| `npm run compare` | Compare latest run vs baseline |
-| `npm run gate` | Evaluate release-gate thresholds (exit 0=PASS, 1=FAIL) |
-| `npm run flaky` | Detect tests that flip between pass/fail across runs |
-| `npm run coverage:gaps` | Report stories not covered by any test |
-| `npm run notify` | Send test result summary to Discord/Slack |
-| `npm run pipeline` | Run full pipeline: test → archive → gate → notify |
+| Command                 | Description                                            |
+| ----------------------- | ------------------------------------------------------ |
+| `npm run check:env`     | Validate all required env vars are set                 |
+| `npm run archive`       | Archive latest results to `test-results/history/`      |
+| `npm run compare`       | Compare latest run vs baseline                         |
+| `npm run gate`          | Evaluate release-gate thresholds (exit 0=PASS, 1=FAIL) |
+| `npm run flaky`         | Detect tests that flip between pass/fail across runs   |
+| `npm run coverage:gaps` | Report stories not covered by any test                 |
+| `npm run notify`        | Send test result summary to Discord/Slack              |
+| `npm run pipeline`      | Run full pipeline: test → archive → gate → notify      |
 
 ---
 
@@ -349,17 +349,17 @@ Add to your pipeline (example GitHub Actions step):
   if: failure()
   run: npm run notify
   env:
-    SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+    MS_TEAMS_WEBHOOK_URL: ${{ secrets.MS_TEAMS_WEBHOOK_URL }}
 ```
 
 ---
 
 ## Reference Docs
 
-| File | Description |
-|---|---|
-| [HERMES.md](HERMES.md) | Full Hermes integration reference and capability map |
-| [HERMES-ADOPTION-GUIDE.md](HERMES-ADOPTION-GUIDE.md) | What works standalone vs what needs Hermes running |
-| [SOUL.md](SOUL.md) | Agent identity, project map, and definition of "green" |
-| [HERMES-IMPLEMENTATION-PLAN.md](HERMES-IMPLEMENTATION-PLAN.md) | 9-phase implementation plan and design decisions |
-| [.env.example](.env.example) | All supported environment variables with descriptions |
+| File                                                           | Description                                            |
+| -------------------------------------------------------------- | ------------------------------------------------------ |
+| [HERMES.md](HERMES.md)                                         | Full Hermes integration reference and capability map   |
+| [HERMES-ADOPTION-GUIDE.md](HERMES-ADOPTION-GUIDE.md)           | What works standalone vs what needs Hermes running     |
+| [SOUL.md](SOUL.md)                                             | Agent identity, project map, and definition of "green" |
+| [HERMES-IMPLEMENTATION-PLAN.md](HERMES-IMPLEMENTATION-PLAN.md) | 9-phase implementation plan and design decisions       |
+| [.env.example](.env.example)                                   | All supported environment variables with descriptions  |

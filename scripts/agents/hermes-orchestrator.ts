@@ -12,7 +12,7 @@
  *   5. Test Automation       (TC → spec → run)
  *      └─ FAIL → Self-Healing (up to maxHealAttempts)
  *   6. Release Gate          (existing gate from scripts/release-gate.ts)
- *   7. Notify                (Discord / Slack)
+ *   7. Notify                (MS Teams)
  *
  * Flags:
  *   --once           Run one cycle immediately and exit
@@ -265,34 +265,62 @@ async function processStory(
 async function sendNotification(
   results: OrchestratorRunResult[],
 ): Promise<void> {
-  const webhookUrl =
-    process.env.DISCORD_WEBHOOK_URL || process.env.SLACK_WEBHOOK_URL;
-  if (!webhookUrl) return;
+  const teamsUrl = process.env.MS_TEAMS_WEBHOOK_URL;
+  if (!teamsUrl) return;
 
   const failed = results.filter(
     (r) => r.coverageDecision === 'FAIL' || r.errors.length > 0,
   );
-  const message = [
-    `🤖 **Hermes Agent Pipeline Report**`,
-    `Time: ${new Date().toISOString()}`,
-    `Stories: ${results.length} processed`,
-    `Failures: ${failed.length}`,
-    ...failed.map(
-      (r) =>
-        `• ${r.storyId}: score=${r.coverageScore}% | ${r.errors[0] ?? 'gate failed'}`,
-    ),
-  ].join('\n');
+
+  const facts = [
+    { title: 'Stories processed', value: String(results.length) },
+    { title: 'Failures', value: String(failed.length) },
+    { title: 'Time', value: new Date().toISOString() },
+  ];
+
+  const bodyItems: object[] = [
+    {
+      type: 'TextBlock',
+      text: '🤖 Hermes Agent Pipeline Report',
+      weight: 'Bolder',
+      size: 'Medium',
+      color: failed.length > 0 ? 'Attention' : 'Good',
+    },
+    { type: 'FactSet', facts },
+  ];
+
+  if (failed.length > 0) {
+    const lines = failed
+      .map(
+        (r) =>
+          `• ${r.storyId}: score=${r.coverageScore}% | ${r.errors[0] ?? 'gate failed'}`,
+      )
+      .join('\n');
+    bodyItems.push({ type: 'TextBlock', text: lines, wrap: true });
+  }
+
+  const payload = {
+    type: 'message',
+    attachments: [
+      {
+        contentType: 'application/vnd.microsoft.card.adaptive',
+        content: {
+          $schema: 'http://adaptivecards.io/schemas/adaptive-card.json',
+          type: 'AdaptiveCard',
+          version: '1.5',
+          body: bodyItems,
+        },
+      },
+    ],
+  };
 
   try {
     const axios = (await import('axios')).default;
-    const payload = process.env.DISCORD_WEBHOOK_URL
-      ? { content: message }
-      : { text: message };
-    await axios.post(webhookUrl, payload);
-    console.log('[orchestrator] Notification sent');
+    await axios.post(teamsUrl, payload);
+    console.log('[orchestrator] MS Teams notification sent');
   } catch (err) {
     console.warn(
-      `[orchestrator] Notification failed: ${(err as Error).message}`,
+      `[orchestrator] MS Teams notification failed: ${(err as Error).message}`,
     );
   }
 }

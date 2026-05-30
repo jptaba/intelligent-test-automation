@@ -2,12 +2,15 @@
  * notify.ts
  *
  * Reads the latest archived run and gate decision, then posts a formatted
- * summary to configured webhook endpoints. Always prints to stdout.
+ * summary to the configured MS Teams webhook. Always prints to stdout.
  *
  * Environment variables (all optional):
- *   DISCORD_WEBHOOK_URL   — Discord incoming webhook URL
- *   SLACK_WEBHOOK_URL     — Slack incoming webhook URL
+ *   MS_TEAMS_WEBHOOK_URL  — MS Teams incoming webhook URL (Power Automate Workflow)
  *   NOTIFY_ON_PASS        — also notify on PASS (default: false — only on FAIL)
+ *
+ * How to create a Teams webhook:
+ *   Teams channel → (•••) More options → Workflows → "Post to a channel when
+ *   a webhook request is received" → copy the URL → set MS_TEAMS_WEBHOOK_URL
  *
  * Usage:
  *   tsx scripts/notify.ts
@@ -146,86 +149,97 @@ if (DRY_RUN) {
 // Webhook delivery (async IIFE — required for CJS module format)
 // ---------------------------------------------------------------------------
 void (async () => {
-  // Discord webhook
-  const discordUrl = process.env.DISCORD_WEBHOOK_URL;
-  if (discordUrl) {
-    const color = gate.result === 'PASS' ? 0x2ecc71 : 0xe74c3c;
-    const fields = [
-      { name: 'Pass Rate', value: `${run.stats.passRate}%`, inline: true },
-      { name: 'Failed', value: String(run.stats.failed), inline: true },
-      {
-        name: 'Smoke',
-        value: `${run.smokeTests.passed}/${run.smokeTests.total}`,
-        inline: true,
-      },
-      {
-        name: 'Commit',
-        value: `\`${run.gitSha}\` on \`${run.gitBranch}\``,
-        inline: false,
-      },
-    ];
-
-    if (run.gitMessage) {
-      fields.push({ name: 'Message', value: run.gitMessage, inline: false });
-    }
-
-    if (gate.reasons.length > 0) {
-      fields.push({
-        name: 'Blocking Reasons',
-        value: gate.reasons.join('\n'),
-        inline: false,
-      });
-    }
-
-    const payload = JSON.stringify({
-      embeds: [{ title, color, fields }],
-    });
-
-    try {
-      const res = await fetch(discordUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: payload,
-      });
-      console.log(
-        `[notify] Discord: ${res.ok ? '✓ Sent' : `✗ HTTP ${res.status}`}`,
-      );
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : String(err);
-      console.error(`[notify] Discord: ✗ ${msg}`);
-    }
-  } else {
-    console.log('[notify] DISCORD_WEBHOOK_URL not set — skipping Discord.');
+  const teamsUrl = process.env.MS_TEAMS_WEBHOOK_URL;
+  if (!teamsUrl) {
+    console.log(
+      '[notify] MS_TEAMS_WEBHOOK_URL not set — skipping Teams notification.',
+    );
+    console.log('');
+    return;
   }
 
-  // Slack webhook
-  const slackUrl = process.env.SLACK_WEBHOOK_URL;
-  if (slackUrl) {
-    const slackText =
-      `${statusIcon} *${gate.result}* — demo-playwright-cli\n` +
-      `${run.stats.passed}/${run.stats.total} passed (${run.stats.passRate}%) · ` +
-      `${run.stats.failed} failed · ` +
-      `Smoke ${run.smokeTests.passed}/${run.smokeTests.total}\n` +
-      `Commit: \`${run.gitSha}\` on \`${run.gitBranch}\`` +
-      (gate.reasons.length > 0
-        ? `\n*Blocked:* ${gate.reasons.join('; ')}`
-        : '');
+  // MS Teams Adaptive Card payload (Power Automate Workflow webhook format)
+  const themeColor = gate.result === 'PASS' ? 'Good' : 'Attention';
+  const facts: Array<{ title: string; value: string }> = [
+    { title: 'Pass Rate', value: `${run.stats.passRate}%` },
+    { title: 'Failed', value: String(run.stats.failed) },
+    {
+      title: 'Smoke',
+      value: `${run.smokeTests.passed}/${run.smokeTests.total}`,
+    },
+    { title: 'Branch', value: run.gitBranch },
+    { title: 'Commit', value: run.gitSha },
+  ];
 
-    try {
-      const res = await fetch(slackUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: slackText }),
-      });
-      console.log(
-        `[notify] Slack:   ${res.ok ? '✓ Sent' : `✗ HTTP ${res.status}`}`,
-      );
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : String(err);
-      console.error(`[notify] Slack:   ✗ ${msg}`);
-    }
-  } else {
-    console.log('[notify] SLACK_WEBHOOK_URL not set — skipping Slack.');
+  if (run.gitMessage) {
+    facts.push({ title: 'Message', value: run.gitMessage });
+  }
+
+  const bodyItems: object[] = [
+    {
+      type: 'TextBlock',
+      text: title,
+      weight: 'Bolder',
+      size: 'Medium',
+      color: themeColor,
+      wrap: true,
+    },
+    {
+      type: 'FactSet',
+      facts,
+    },
+  ];
+
+  if (gate.reasons.length > 0) {
+    bodyItems.push({
+      type: 'TextBlock',
+      text: `**Blocking reasons:** ${gate.reasons.join(' · ')}`,
+      color: 'Attention',
+      wrap: true,
+    });
+  }
+
+  if (run.failures.length > 0) {
+    const failList = run.failures
+      .slice(0, 5)
+      .map((f) => `• ${f.title}`)
+      .join('\n');
+    const more =
+      run.failures.length > 5 ? `\n• …and ${run.failures.length - 5} more` : '';
+    bodyItems.push({
+      type: 'TextBlock',
+      text: `**Failing tests:**\n${failList}${more}`,
+      wrap: true,
+    });
+  }
+
+  const payload = {
+    type: 'message',
+    attachments: [
+      {
+        contentType: 'application/vnd.microsoft.card.adaptive',
+        content: {
+          $schema: 'http://adaptivecards.io/schemas/adaptive-card.json',
+          type: 'AdaptiveCard',
+          version: '1.5',
+          body: bodyItems,
+        },
+      },
+    ],
+  };
+
+  try {
+    const res = await fetch(teamsUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    console.log(
+      `[notify] MS Teams: ${res.ok ? '✓ Sent' : `✗ HTTP ${res.status}`}`,
+    );
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error(`[notify] MS Teams: ✗ ${msg}`);
   }
 
   console.log('');

@@ -470,10 +470,10 @@ npm run coverage:gaps
 
 ### 11. Notify Stakeholders
 
-Posts a test run summary to Discord and/or Slack. Always prints to stdout.
+Posts a test run summary to MS Teams as an Adaptive Card. Always prints to stdout.
 
 ```bash
-# Send to configured webhooks
+# Send to configured Teams channel
 npm run notify
 
 # Preview without sending
@@ -483,8 +483,9 @@ npm run notify -- --dry-run
 **Configure in `.env`:**
 
 ```bash
-DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/...
-SLACK_WEBHOOK_URL=https://hooks.slack.com/services/...
+# Create via: Teams channel → (•••) More options → Workflows
+# → "Post to a channel when a webhook request is received" → copy URL
+MS_TEAMS_WEBHOOK_URL=https://prod-xx.westus.logic.azure.com/workflows/...
 NOTIFY_ON_PASS=false     # set to true to also notify on passing runs
 ```
 
@@ -510,8 +511,7 @@ GATE_SMOKE_MUST_PASS=true      # require all @smoke tests to pass (default: true
 GATE_MAX_FAILURES=0            # max allowed failing tests (default: 0)
 
 # --- Notifications ---
-DISCORD_WEBHOOK_URL=           # Discord incoming webhook URL
-SLACK_WEBHOOK_URL=             # Slack incoming webhook URL
+MS_TEAMS_WEBHOOK_URL=          # MS Teams incoming webhook URL (Power Automate)
 NOTIFY_ON_PASS=false           # notify on PASS too (default: false)
 ```
 
@@ -609,7 +609,7 @@ jobs:
         if: always() # notify even when gate fails
         run: npm run notify
         env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          MS_TEAMS_WEBHOOK_URL: ${{ secrets.MS_TEAMS_WEBHOOK_URL }}
           NOTIFY_ON_PASS: 'true'
 
       - name: Upload Playwright report

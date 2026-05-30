@@ -74,6 +74,6 @@ export const ENV = {
   ),
 
   // ── Notifications (optional) ─────────────────────────────────────────────
-  DISCORD_WEBHOOK_URL: optionalEnv('DISCORD_WEBHOOK_URL'),
-  SLACK_WEBHOOK_URL: optionalEnv('SLACK_WEBHOOK_URL'),
+  /** MS Teams Incoming Webhook URL (Power Automate Workflow connector) */
+  MS_TEAMS_WEBHOOK_URL: optionalEnv('MS_TEAMS_WEBHOOK_URL'),
 } as const;
