@@ -69,10 +69,10 @@ Failing tests:
 
 ## Configuration reference
 
-| Env var                | Default   | Description                                      |
-| ---------------------- | --------- | ------------------------------------------------ |
-| `MS_TEAMS_WEBHOOK_URL` | (not set) | MS Teams incoming webhook URL (Power Automate)   |
-| `NOTIFY_ON_PASS`       | `false`   | Also send notification when gate passes          |
+| Env var                | Default   | Description                                    |
+| ---------------------- | --------- | ---------------------------------------------- |
+| `MS_TEAMS_WEBHOOK_URL` | (not set) | MS Teams incoming webhook URL (Power Automate) |
+| `NOTIFY_ON_PASS`       | `false`   | Also send notification when gate passes        |
 
 ## Tip: reducing alert fatigue
 
