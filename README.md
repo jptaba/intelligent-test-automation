@@ -2,6 +2,11 @@
 
 Playwright TypeScript e2e test framework for [SauceDemo](https://www.saucedemo.com), powered by [@playwright/cli](https://playwright.dev/agent-cli/introduction).
 
+## Hermes Agent Decision Docs
+
+- [HERMES.md](HERMES.md): Full integration reference and capabilities.
+- [HERMES-ADOPTION-GUIDE.md](HERMES-ADOPTION-GUIDE.md): What runs now without Hermes Agent vs what requires installing Hermes Agent later.
+
 ## Quick Start
 
 ```bash

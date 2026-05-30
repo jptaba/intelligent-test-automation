@@ -1,0 +1,32 @@
+{
+  "coverageGate": {
+    "minimumCoveragePercent": 90,
+    "requireImagesDescribed": true,
+    "requireFigmaReferences": true,
+    "requireConfluenceDetails": true,
+    "maxGenerationRetries": 3,
+    "weights": {
+      "acCoverage": 40,
+      "imageBehaviorCapture": 25,
+      "figmaUIElementRefs": 20,
+      "confluenceDetailRefs": 15
+    }
+  },
+  "codebaseAgent": {
+    "trackedGlobs": [
+      "pages/**/*.ts",
+      "fixtures/**/*.ts",
+      "data/**/*.ts",
+      "helpers/**/*.ts"
+    ],
+    "deepScanOnlyChanged": true
+  },
+  "selfHealing": {
+    "maxHealAttempts": 3,
+    "selectorFallbackToSnapshot": true
+  },
+  "releaseGate": {
+    "minimumPassRate": 95,
+    "smokesMustAllPass": true
+  }
+}

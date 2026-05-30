@@ -36,7 +36,10 @@ export default tseslint.config(
       '@typescript-eslint/no-explicit-any': 'error',
       // Allow `expect` as an unused import — it's the standard Playwright import
       // pattern even when assertions are delegated to page-object methods.
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^expect$' }],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^expect$' },
+      ],
     },
   },
 

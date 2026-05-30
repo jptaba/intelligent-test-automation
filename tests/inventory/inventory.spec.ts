@@ -1,5 +1,7 @@
+// covers: STORY-002, STORY-003
 import { test, expect } from '../../fixtures/auth.fixture';
 import { InventoryPage } from '../../pages/InventoryPage';
+import { PRODUCTS } from '../../data/products';
 
 test.describe('Inventory', () => {
   test('@smoke products are displayed after login', async ({
@@ -57,6 +59,55 @@ test.describe('Inventory', () => {
       await inventory.sortBy('za');
       const names = await inventory.getProductNames();
       expect(names).toHaveLength(6);
+    });
+  });
+
+  test.describe('Sort by Price (STORY-003)', () => {
+    const cheapest = [...PRODUCTS].sort((a, b) => a.price - b.price)[0];
+    const mostExpensive = [...PRODUCTS].sort((a, b) => b.price - a.price)[0];
+
+    test('@smoke sort Price (low to high) shows cheapest item first', async ({
+      loggedInPage,
+    }) => {
+      const inventory = new InventoryPage(loggedInPage);
+      await inventory.sortBy('lohi');
+      const prices = await inventory.getProductPrices();
+      expect(prices[0]).toBe(cheapest.price);
+      const names = await inventory.getProductNames();
+      expect(names[0]).toBe(cheapest.name);
+    });
+
+    test('sort Price (high to low) shows most expensive item first', async ({
+      loggedInPage,
+    }) => {
+      const inventory = new InventoryPage(loggedInPage);
+      await inventory.sortBy('hilo');
+      const prices = await inventory.getProductPrices();
+      expect(prices[0]).toBe(mostExpensive.price);
+      const names = await inventory.getProductNames();
+      expect(names[0]).toBe(mostExpensive.name);
+    });
+
+    test('product count stays at 6 after price sort', async ({
+      loggedInPage,
+    }) => {
+      const inventory = new InventoryPage(loggedInPage);
+      await inventory.sortBy('lohi');
+      const names = await inventory.getProductNames();
+      expect(names).toHaveLength(6);
+    });
+
+    test('switching between price sort options re-renders product list', async ({
+      loggedInPage,
+    }) => {
+      const inventory = new InventoryPage(loggedInPage);
+      await inventory.sortBy('lohi');
+      const namesLoHi = await inventory.getProductNames();
+      expect(namesLoHi[0]).toBe(cheapest.name);
+
+      await inventory.sortBy('hilo');
+      const namesHiLo = await inventory.getProductNames();
+      expect(namesHiLo[0]).toBe(mostExpensive.name);
     });
   });
 });

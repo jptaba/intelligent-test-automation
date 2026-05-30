@@ -10,3 +10,10 @@ node_modules/
 
 # Environment — never commit secrets
 .env
+
+# Hermes Agent — generated/downloaded assets (can be regenerated)
+inputs/assets/
+inputs/stories/*-enriched.json
+.hermes/memory/file-hashes.json
+test-results/coverage-gate-*.json
+CODEBASE.md

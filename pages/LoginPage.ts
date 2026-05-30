@@ -27,4 +27,15 @@ export class LoginPage {
       message,
     );
   }
+
+  /** AC1: Asserts that both Username and Password fields are visible on the login page. */
+  async expectLoginFormVisible(): Promise<void> {
+    await expect(this.page.getByPlaceholder('Username')).toBeVisible();
+    await expect(this.page.getByPlaceholder('Password')).toBeVisible();
+  }
+
+  /** AC3: Asserts the "Products" heading is visible on the inventory page after login. */
+  async expectInventoryHeading(): Promise<void> {
+    await expect(this.page.locator('.title')).toHaveText('Products');
+  }
 }

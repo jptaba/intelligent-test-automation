@@ -49,4 +49,12 @@ export class InventoryPage {
   async getProductNames(): Promise<string[]> {
     return this.page.locator('.inventory_item_name').allTextContents();
   }
+
+  /** Returns product prices as numbers in current display order. */
+  async getProductPrices(): Promise<number[]> {
+    const texts = await this.page
+      .locator('.inventory_item_price')
+      .allTextContents();
+    return texts.map((t) => parseFloat(t.replace('$', '')));
+  }
 }

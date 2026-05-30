@@ -17,7 +17,25 @@
     "report": "playwright show-report",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "check:env": "tsx scripts/env-check.ts",
+    "archive": "tsx scripts/archive-results.ts",
+    "compare": "tsx scripts/compare-runs.ts",
+    "gate": "tsx scripts/release-gate.ts",
+    "flaky": "tsx scripts/flaky-detect.ts",
+    "coverage:gaps": "tsx scripts/coverage-gaps.ts",
+    "notify": "tsx scripts/notify.ts",
+    "pipeline": "tsx scripts/full-pipeline.ts",
+    "test:archive": "playwright test && npm run archive",
+    "hermes:orchestrator": "tsx scripts/agents/hermes-orchestrator.ts",
+    "hermes:once": "tsx scripts/agents/hermes-orchestrator.ts --once",
+    "hermes:ingest": "tsx scripts/agents/story-ingestion-agent.ts",
+    "hermes:codebase": "tsx scripts/agents/codebase-intelligence-agent.ts",
+    "hermes:generate": "tsx scripts/agents/test-case-generation-agent.ts",
+    "hermes:gate": "tsx scripts/agents/coverage-gate-agent.ts",
+    "hermes:learn": "tsx scripts/agents/self-learning-agent.ts",
+    "hermes:automate": "tsx scripts/agents/test-automation-agent.ts",
+    "hermes:heal": "tsx scripts/agents/self-healing-agent.ts"
   },
   "repository": {
     "type": "git",
@@ -34,12 +52,21 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@playwright/cli": "^0.1.13",
+    "@playwright/mcp": "^0.0.75",
     "@playwright/test": "^1.60.0",
+    "@types/js-yaml": "^4.0.9",
     "@types/node": "^25.9.1",
+    "axios": "^1.16.1",
     "dotenv": "^17.4.2",
     "eslint": "^10.4.0",
     "eslint-plugin-playwright": "^2.10.4",
+    "fast-glob": "^3.3.3",
+    "js-yaml": "^4.1.1",
+    "node-cron": "^4.2.1",
+    "openai": "^6.39.1",
     "playwright": "^1.60.0",
-    "typescript-eslint": "^8.60.0"
+    "tsx": "^4.19.2",
+    "typescript-eslint": "^8.60.0",
+    "zod": "^4.4.3"
   }
 }
